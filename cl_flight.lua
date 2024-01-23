@@ -132,7 +132,7 @@ local function resetFlightTest()
     Wait(500)
     local success = lib.callback.await('randol_flight:server:resetTest', false)
     if success then
-        setCoordinates(Config.HeliSpawn.x, Config.HeliSpawn.y, Config.HeliSpawn.z, Config.HeliSpawn.w)
+        setCoordinates(Config.ReturnCoords.x, Config.ReturnCoords.y, Config.ReturnCoords.z, Config.ReturnCoords.w)
     end
     Wait(1000)
     DoScreenFadeIn(10)
