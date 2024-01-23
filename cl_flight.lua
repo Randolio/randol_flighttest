@@ -130,8 +130,10 @@ local function resetFlightTest()
     data.checkpoint = nil
     DoScreenFadeOut(10)
     Wait(500)
-    lib.callback.await('randol_flight:server:resetTest', false)
-    setCoordinates(Config.HeliSpawn.x, Config.HeliSpawn.y, Config.HeliSpawn.z, Config.HeliSpawn.w)
+    local success = lib.callback.await('randol_flight:server:resetTest', false)
+    if success then
+        setCoordinates(Config.HeliSpawn.x, Config.HeliSpawn.y, Config.HeliSpawn.z, Config.HeliSpawn.w)
+    end
     Wait(1000)
     DoScreenFadeIn(10)
 end
@@ -187,9 +189,6 @@ RegisterNetEvent("randol_flight:client:startRace", function(netid)
 
     local veh = NetworkGetEntityFromNetworkId(netid)
     grantVehicleKeys(veh)
-    
-    while cache.seat ~= -1 do TaskWarpPedIntoVehicle(cache.ped, veh, -1) Wait(10) end
-    setCoordinates(Config.Track.start.x, Config.Track.start.y, Config.Track.start.z, Config.Track.start.w)
     FreezeEntityPosition(veh, true)
 
     startCountdown(6)
