@@ -1,7 +1,6 @@
 local flightBusy = false
 local cachedNet = 0
 local currentPly = 0
-local spawn = Config.HeliSpawn
 local testCost = 2500
 local timeToBeat = Config.RecordTime
 
@@ -14,10 +13,20 @@ local function hasFunds(src)
     return false
 end
 
-local function createHelicopter()
-    local heli = CreateVehicle(joaat('frogger'), spawn, true, false)
+local function createHelicopter(source)
+    local heli = CreateVehicle(joaat('frogger'), Config.Track.start.x, Config.Track.start.y, Config.Track.start.z, Config.Track.start.w, true, false)
+    local ped = GetPlayerPed(source)
 
     while not DoesEntityExist(heli) do Wait(10) end 
+
+    for i = 1, 50 do
+        Wait(0)
+        SetPedIntoVehicle(ped, heli, -1)
+
+        if GetVehiclePedIsIn(ped, false) == heli then
+            break
+        end
+    end
 
     return NetworkGetNetworkIdFromEntity(heli)
 end
@@ -37,6 +46,7 @@ lib.callback.register('randol_flight:server:resetTest', function(source)
     flightBusy = false
     cachedNet = 0
     currentPly = 0
+    SetPlayerRoutingBucket(source, 0)
     return true
 end)
 
@@ -49,7 +59,8 @@ lib.callback.register('randol_flight:server:attemptTest', function(source)
         return false, "Someone is currently doing the flight test. Please wait." 
     end
     flightBusy = true
-    cachedNet = createHelicopter()
+    SetPlayerRoutingBucket(src, src)
+    cachedNet = createHelicopter(src)
     currentPly = src
     TriggerClientEvent('randol_flight:client:startRace', src, cachedNet)
     return true
