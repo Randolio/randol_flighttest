@@ -29,4 +29,4 @@ Config.Ped = {
     scenario = 'WORLD_HUMAN_CLIPBOARD',
 }
 
-Config.HeliSpawn = vec4(920.67, -2617.09, 6.11, 81.92)
+Config.ReturnCoords = vec4(920.67, -2617.09, 6.11, 81.92)
