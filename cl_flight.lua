@@ -187,7 +187,11 @@ end
 RegisterNetEvent("randol_flight:client:startRace", function(netid)
     if GetInvokingResource() then return end
 
-    local veh = NetworkGetEntityFromNetworkId(netid)
+    local veh = lib.waitFor(function()
+        if NetworkDoesEntityExistWithNetworkId(netid) then
+            return NetToVeh(netid)
+        end
+    end, 'Could not load entity in time.', 2000)
     grantVehicleKeys(veh)
     FreezeEntityPosition(veh, true)
 
