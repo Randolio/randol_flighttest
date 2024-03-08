@@ -19,13 +19,9 @@ local function createHelicopter(source)
 
     while not DoesEntityExist(heli) do Wait(10) end 
 
-    for i = 1, 50 do
+    while GetVehiclePedIsIn(ped, false) ~= heli do
+        TaskWarpPedIntoVehicle(ped, heli, -1)
         Wait(0)
-        SetPedIntoVehicle(ped, heli, -1)
-
-        if GetVehiclePedIsIn(ped, false) == heli then
-            break
-        end
     end
 
     return NetworkGetNetworkIdFromEntity(heli)
